@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="16px" viewBox="0 0 14 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 53.1 (72631) - https://sketchapp.com -->
+    <title>CCE6DF19-C203-4DBA-A946-2E189FBAEC59</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Navigation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dashboard_Home-/-Navigation-/-Step-2" transform="translate(-935.000000, -622.000000)">
+            <g id="Container-Area" transform="translate(37.000000, 101.000000)">
+                <g id="Bottom-Left-Container" transform="translate(0.000000, 514.000000)">
+                    <g id="Graph-Actions" transform="translate(895.000000, 5.000000)">
+                        <g id="Export-Icon">
+                            <g id="icons/action/download" transform="translate(1.000000, 1.000000)" fill="#9AABAF">
+                                <path d="M2.82044118,16.50375 L15.1795588,16.50375 L15.1795588,14.7381618 L2.82044118,14.7381618 L2.82044118,16.50375 Z M15.1795588,6.79301471 L11.6483824,6.79301471 L11.6483824,1.49625 L6.35161765,1.49625 L6.35161765,6.79301471 L2.82044118,6.79301471 L9,12.9725735 L15.1795588,6.79301471 Z" id="download"></path>
+                            </g>
+                            <rect id="Rectangle" x="0" y="0" width="20" height="20"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

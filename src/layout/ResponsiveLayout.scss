@@ -1,0 +1,148 @@
+.container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between
+}
+
+
+.row, .col{
+    min-height: 100px;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.col{
+
+}
+
+.lc-contaner-item{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    transition: all .2s;
+    position: relative;
+
+    .lc-container-title{
+        height: 30px;
+        border-bottom: 1px solid #132e35;
+        background: #1b3c44;
+
+        .dropdown{
+            float: left;
+            height: 30px;
+ 
+    
+            &.show {
+                .dropdown-toggle{
+                    background: #2c6d7c;
+                }
+            }
+    
+    
+            .dropdown-toggle{
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+                color: #9aabaf;
+                padding: 0 16px;
+                cursor: pointer;
+    
+                &:hover{
+                    background: #2c6d7c;
+                  
+                }
+            }
+    
+            .dropdown-menu{
+                background: #2c6d7c;
+                border-radius: 0;
+    
+                .dropdown-item{
+                    font-size: 14px;
+                    color: #f4f4f4;
+                    cursor: pointer;
+    
+                    &.selected{
+                        background: #20515c
+                    }
+    
+                    &:hover{
+                        background: #0097ba;
+                    
+                    }
+                }
+            }
+        }
+
+        .title-area{
+            float: left;
+            margin-top: 8px;
+            margin-left: 10px;
+            font-size: 12px;
+            color: #9aabaf;
+        }
+        
+        .hx-left-icon{
+            float: left;
+            margin-top: 3px;
+            margin-left: 10px;
+            cursor: pointer;
+        
+        
+        }
+        
+        .hx-right-icon{
+           float: right;
+           margin-top: 3px;
+           margin-right: 10px;
+           cursor: pointer;
+        }
+        .hx-right-icon img{
+            width: 16px;
+            height: 16px;
+        }
+        .search-area{
+            display: inline-block;
+            float: right;
+            margin-top: 4px;
+            margin-right: 10px;
+            height: 25px;
+            position: relative;
+        }
+        .search-area .search-icon{
+            position: absolute;
+            right: 8px;
+        
+        }
+        .search-area input{
+            height: 22px;
+            width: 180px;
+            border: none;
+            border-radius: none;
+            background: #132e35;
+            appearance: none;
+            text-indent: 16px;
+        
+        }
+        
+    }
+    .lc-contaner-item-content{
+        flex-grow: 1;
+        background: #1b3c44;
+        padding: 16px;
+    }
+}
+
+
+
+
+
+
+
+
