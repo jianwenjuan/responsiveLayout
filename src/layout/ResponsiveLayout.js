@@ -30,7 +30,7 @@ class Content extends Component {
         console.log(data);
         data.expand = !data.expand;
         this.setState({
-            layoutChange: this.layoutChange +1
+            layoutChange: this.layoutChange + 1
         })
     }
 
