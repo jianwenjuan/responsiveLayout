@@ -134,8 +134,6 @@ class App extends Component {
       }
     }
 
-
-
     this.structure = {
       rows: [
         {

@@ -6,6 +6,7 @@ import iconEnum from './titleIconEnum';
 
 
 class ContainerTitle extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -50,8 +51,6 @@ class ContainerTitle extends Component {
         return btns;
     }
 
-
-
     onClick(type, callback) {
         return () => {
             const handler = this.props[`on${type}`];
@@ -90,7 +89,7 @@ class ContainerTitle extends Component {
         const dropDownMenu = this.props.dropDownMenu;
         if (!dropDownMenu || !dropDownMenu.length) return '';
         const items = dropDownMenu.map((item, i) => {
-            return <DropdownItem  className={item.selected ? 'selected' : ""} key={i} onClick={this.onClickMenuItem(item, dropDownMenu)} >{item.name}</DropdownItem>
+            return <DropdownItem className={item.selected ? 'selected' : ""} key={i} onClick={this.onClickMenuItem(item, dropDownMenu)} >{item.name}</DropdownItem>
         });
 
         return (
@@ -139,7 +138,7 @@ class ContainerTitle extends Component {
 
         return (
             <div className="lc-container-title">
-              {btns && btns.map((item) => {
+                {btns && btns.map((item) => {
                     return item;
                 })}
                 {!!this.props.config.expand && dropDownMenu}
