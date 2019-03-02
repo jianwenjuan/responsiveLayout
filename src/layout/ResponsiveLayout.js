@@ -4,38 +4,43 @@ import ContainerItem from './ContainerItem';
 
 
 class ResponsiveLayout extends Component {
-
-
-    render() {
-        let structure = this.props.structure;
-        let containerStyle = {
-            display: 'flex',
-            flexDirection: 'column',
-            width: '1200px',
-            margin: '0 auto'
-        }
-        return (
-            <div className='container1' style={containerStyle} >
-                <Content structure={structure}></Content>
-            </div>
-        )
-    }
-}
-
-class Content extends Component {
     state = {
         layoutChange: 0
     }
+
     ontoggle = (data) => {
-        console.log(data);
         data.expand = !data.expand;
+
+        this.reRenderLayout();
+    }
+
+    onmaximize = (data) => {
+        data.isMaximize = !data.isMaximize;
+        if (data.isMaximize) {
+            this.maxmizeConfig = data;
+        } else {
+            this.maxmizeConfig = null;
+        }
+
+        this.reRenderLayout();
+    }
+
+    reRenderLayout = () => {
         this.setState({
-            layoutChange: this.layoutChange +1
+            layoutChange: this.layoutChange + 1
         })
     }
 
-    render() {
-        let structure = this.props.structure;
+    content = (structure) => {
+        if (this.maxmizeConfig) {
+            return (<div className='row'>
+                <ContainerItem
+                    style={{ ...this.maxmizeConfig.style, flex: 1 }}
+                    onmaximize={this.onmaximize}
+                    options={this.maxmizeConfig}
+                />
+            </div>)
+        }
         return (
             <React.Fragment>
                 {
@@ -52,7 +57,7 @@ class Content extends Component {
                             else if (item.rows || item.cols) {
                                 return (
                                     <div className='row' style={item.style}>
-                                        <Content structure={item}></Content>
+                                        {this.content(item)}
                                     </div>
                                 )
                             }
@@ -61,20 +66,20 @@ class Content extends Component {
                     ) : (
                             structure.cols.map(item => {
 
-                                const style = item.style || {};
+                                let style = {};
+                                Object.assign(style, item.style);
 
                                 if (((style && !style.width) || !style) && !!item.expand) {
                                     style.flex = 1;
                                 }
-
                                 if (item.expand === false) {
                                     style.width = '30px';
                                 }
 
-
                                 if (!item.rows && !item.cols) {
                                     return (<ContainerItem
                                         style={style}
+                                        onmaximize={this.onmaximize}
                                         ontoggle={this.ontoggle}
                                         options={item}
                                     />);
@@ -82,7 +87,7 @@ class Content extends Component {
                                 else if (item.row || item.cols) {
                                     return (
                                         <div className='col' style={item.style}>
-                                            <Content structure={item}></Content>
+                                            {this.content(item)}
                                         </div>
                                     )
                                 }
@@ -90,8 +95,22 @@ class Content extends Component {
                             }))
                 }</React.Fragment>
         )
+
+    }
+
+    render() {
+        let containerStyle = {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '1200px',
+            margin: '0 auto'
+        }
+        return (
+            <div className='container1' style={containerStyle} >
+                {this.content(this.props.structure)}
+            </div>
+        )
     }
 }
-
 
 export default ResponsiveLayout;

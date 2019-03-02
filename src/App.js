@@ -17,7 +17,7 @@ class App extends Component {
           height: '400px'
         },
         titleConfig: {
-          title:'Assets',
+          title: 'Assets',
           icons: [{
             icon: 'layout-c-maximize-expand',
             type: 'maximize',
@@ -50,7 +50,7 @@ class App extends Component {
           width: '400px',
         },
         titleConfig: {
-          title:'Event Log',
+          title: 'Event Log',
           icons: [{
             icon: 'layout-c-toggle-left-expand',
             type: 'toggle',
@@ -119,7 +119,7 @@ class App extends Component {
           height: '400px'
         },
         titleConfig: {
-          title:'Effectives',
+          title: 'Effectives',
           icons: [{
             icon: 'layout-c-toggle-left-expand',
             type: 'toggle',
@@ -133,8 +133,6 @@ class App extends Component {
         }
       }
     }
-
-
 
     this.structure = {
       rows: [
