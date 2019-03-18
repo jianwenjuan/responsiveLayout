@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ContainerItem from './ContainerItem';
+import ResizeDom from './ResizeDom'
 
 
 
@@ -8,11 +9,17 @@ class ResponsiveLayout extends Component {
         layoutChange: 0
     }
 
+
+
     ontoggle = (data) => {
         data.expand = !data.expand;
 
         this.reRenderLayout();
     }
+
+    resizeItem = {};
+
+
 
     onmaximize = (data) => {
         data.isMaximize = !data.isMaximize;
@@ -25,15 +32,52 @@ class ResponsiveLayout extends Component {
         this.reRenderLayout();
     }
 
+    dragStart = (beforeItem, afterItem) => {
+        const _this = this;
+        return (event) => {
+            console.log(event.target.offsetX);
+            _this.resizeDir = event.target.attributes['direction'].value;
+            _this.resizeAfterEle = event.target.parentNode;
+            _this.resizeAfterItem = afterItem;
+            _this.resizeBeforeEle = _this.resizeAfterEle.previousSibling; 
+            _this.resizeBeforeItem = beforeItem;
+        }
+
+
+    }
+
+    dragResize = (dix, disy, event)=> {
+        console.log(dix, disy);
+
+        if(this.resizeDir === 'vertical'){
+            const totalWidth = this.resizeAfterEle.offsetWidth  + this.resizeBeforeEle.offsetWidth;
+            this.resizeAfterItem['style'] = {
+                ... this.resizeAfterItem['style'],
+                width:`${this.resizeAfterEle.offsetWidth - dix}px`
+            }
+            this.resizeBeforeItem['style'] = {
+                ...this.resizeBeforeItem['style'],
+                width:`${totalWidth - this.resizeAfterEle.offsetWidth + dix}px`
+            }
+ 
+            this.reRenderLayout();
+
+        }
+
+
+    }
+
     reRenderLayout = () => {
         this.setState({
             layoutChange: this.layoutChange + 1
         })
+
+        this.props.onLayoutChange && this.props.onLayoutChange();
     }
 
     content = (structure) => {
         if (this.maxmizeConfig) {
-            return (<div className='row'>
+            return (<div className='row-item'>
                 <ContainerItem
                     style={{ ...this.maxmizeConfig.style, flex: 1 }}
                     onmaximize={this.onmaximize}
@@ -41,13 +85,15 @@ class ResponsiveLayout extends Component {
                 />
             </div>)
         }
+
+
         return (
             <React.Fragment>
                 {
                     structure.rows ? (
-                        structure.rows.map(item => {
+                        structure.rows.map((item, i) => {
                             if (!item.rows && !item.cols) {
-                                return (<div className='row'>
+                                return (<div className='row-item'>
                                     <ContainerItem
                                         style={{ ...item.style, flex: 1 }}
                                         options={item}
@@ -56,15 +102,17 @@ class ResponsiveLayout extends Component {
                             }
                             else if (item.rows || item.cols) {
                                 return (
-                                    <div className='row' style={item.style}>
+                                    <div className='row-item' style={item.style}>
                                         {this.content(item)}
+                                        {i !== 0 && <ResizeDom dragStart={this.dragStart} dragResize={this.dragResize} direction={'horizontal'} />}
                                     </div>
                                 )
                             }
                             return null;
                         })
                     ) : (
-                            structure.cols.map(item => {
+                            structure.cols.map((item, i) => {
+                                console.log(i)
 
                                 let style = {};
                                 Object.assign(style, item.style);
@@ -73,16 +121,20 @@ class ResponsiveLayout extends Component {
                                     style.flex = 1;
                                 }
                                 if (item.expand === false) {
-                                    style.width = '30px';
+                                    style = { flexBasis: '30px' };
                                 }
 
                                 if (!item.rows && !item.cols) {
-                                    return (<ContainerItem
-                                        style={style}
-                                        onmaximize={this.onmaximize}
-                                        ontoggle={this.ontoggle}
-                                        options={item}
-                                    />);
+                                    return (<div className='col-item' style={style}>
+                                        <ContainerItem
+                                            onmaximize={this.onmaximize}
+                                            ontoggle={this.ontoggle}
+                                            options={item}
+                                        />
+                                        {i !== 0 && <ResizeDom dragStart={this.dragStart(structure.cols[i - 1], item)} dragResize={this.dragResize.bind(this)} direction={'vertical'} />}
+                                    </div>
+
+                                    );
                                 }
                                 else if (item.row || item.cols) {
                                     return (
@@ -102,7 +154,7 @@ class ResponsiveLayout extends Component {
         let containerStyle = {
             display: 'flex',
             flexDirection: 'column',
-            width: '1200px',
+            width: `${this.props.width}px`,
             margin: '0 auto'
         }
         return (

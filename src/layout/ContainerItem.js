@@ -7,7 +7,7 @@ class ContainerItem extends Component {
         const titleConfig = itemTileConfig(this.props.options);
 
         return (
-            <div className='lc-contaner-item' style={this.props.style}>
+            <div className='lc-contaner-item'>
 
                 <ContainerTitle
                     onmaximize={this.props.onmaximize}
