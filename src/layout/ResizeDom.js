@@ -64,8 +64,6 @@ class ResizeDom extends Component {
 
     startDragResize = () => {
         this.beginDragResize = true;
-      
-
     }
 
     onMouseUp = (oEvent) => {

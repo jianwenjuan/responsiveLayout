@@ -9,8 +9,6 @@ class ResponsiveLayout extends Component {
         layoutChange: 0
     }
 
-
-
     ontoggle = (data) => {
         data.expand = !data.expand;
 
@@ -18,8 +16,6 @@ class ResponsiveLayout extends Component {
     }
 
     resizeItem = {};
-
-
 
     onmaximize = (data) => {
         data.isMaximize = !data.isMaximize;
@@ -35,36 +31,53 @@ class ResponsiveLayout extends Component {
     dragStart = (beforeItem, afterItem) => {
         const _this = this;
         return (event) => {
-            console.log(event.target.offsetX);
             _this.resizeDir = event.target.attributes['direction'].value;
             _this.resizeAfterEle = event.target.parentNode;
+            _this.resizeAfterEleWidth = _this.resizeAfterEle.offsetWidth;
+            _this.resizeBeforeEleWidth = _this.resizeAfterEle.previousSibling.offsetWidth;
+            _this.resizeAfterEleHeight = _this.resizeAfterEle.offsetHeight - 8;
+            _this.resizeBeforeEleHeight = _this.resizeAfterEle.previousSibling.offsetHeight -8;
             _this.resizeAfterItem = afterItem;
-            _this.resizeBeforeEle = _this.resizeAfterEle.previousSibling; 
             _this.resizeBeforeItem = beforeItem;
         }
-
-
     }
 
-    dragResize = (dix, disy, event)=> {
-        console.log(dix, disy);
-
-        if(this.resizeDir === 'vertical'){
-            const totalWidth = this.resizeAfterEle.offsetWidth  + this.resizeBeforeEle.offsetWidth;
+    dragResize = (dix, disy, event) => {
+        if (this.resizeDir === 'vertical') {
+            const totalWidth = this.resizeAfterEleWidth + this.resizeBeforeEleWidth;
             this.resizeAfterItem['style'] = {
-                ... this.resizeAfterItem['style'],
-                width:`${this.resizeAfterEle.offsetWidth - dix}px`
+                ...this.resizeAfterItem['style'],
+                width: `${this.resizeAfterEleWidth - dix}px`
             }
             this.resizeBeforeItem['style'] = {
                 ...this.resizeBeforeItem['style'],
-                width:`${totalWidth - this.resizeAfterEle.offsetWidth + dix}px`
+                width: `${totalWidth - this.resizeAfterEleWidth + dix}px`
             }
- 
-            this.reRenderLayout();
-
         }
 
+        if (this.resizeDir === 'horizontal') {
+            const totalHeight = this.resizeAfterEleHeight + this.resizeBeforeEleHeight;
+            console.log(totalHeight);
+            if (this.resizeAfterItem.cols) {
+                this.resizeAfterItem.cols.forEach(element => {
+                    element['style'] = {
+                        ...element['style'],
+                        height: `${this.resizeAfterEleHeight - disy}px`
+                    }
+                });
+            }
 
+            if (this.resizeBeforeItem.cols) {
+                this.resizeBeforeItem.cols.forEach(element => {
+                    element['style'] = {
+                        ...element['style'],
+                        height: `${totalHeight - this.resizeAfterEleHeight + disy}px`
+                    }
+                });
+            }
+        }
+
+        this.reRenderLayout();
     }
 
     reRenderLayout = () => {
@@ -85,8 +98,6 @@ class ResponsiveLayout extends Component {
                 />
             </div>)
         }
-
-
         return (
             <React.Fragment>
                 {
@@ -94,17 +105,19 @@ class ResponsiveLayout extends Component {
                         structure.rows.map((item, i) => {
                             if (!item.rows && !item.cols) {
                                 return (<div className='row-item'>
-                                    <ContainerItem
-                                        style={{ ...item.style, flex: 1 }}
-                                        options={item}
-                                    />
+                                    <div className='col-item' style={{ ...item.style, flex: 1 }}>
+                                        <ContainerItem
+                                            options={item}
+                                        />
+                                    </div>
+                                    {i !== 0 && <ResizeDom dragStart={this.dragStart(structure.rows[i - 1], item)} dragResize={this.dragResize.bind(this)} direction={'horizontal'} />}
                                 </div>);
                             }
                             else if (item.rows || item.cols) {
                                 return (
                                     <div className='row-item' style={item.style}>
                                         {this.content(item)}
-                                        {i !== 0 && <ResizeDom dragStart={this.dragStart} dragResize={this.dragResize} direction={'horizontal'} />}
+                                        {i !== 0 && <ResizeDom dragStart={this.dragStart(structure.rows[i - 1], item)} dragResize={this.dragResize.bind(this)} direction={'horizontal'} />}
                                     </div>
                                 )
                             }
@@ -112,8 +125,6 @@ class ResponsiveLayout extends Component {
                         })
                     ) : (
                             structure.cols.map((item, i) => {
-                                console.log(i)
-
                                 let style = {};
                                 Object.assign(style, item.style);
 

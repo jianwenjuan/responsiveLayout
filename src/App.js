@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 // import ResponsiveLayout from './components/responsiveLayout/ResponsiveLayout';
 import ResponsiveLayout from './layout/ResponsiveLayout';
 import RuntimeNotRuntime from './components/RuntimeNotRuntime';
+import { deepMerge } from './util';
 import './App.scss';
+import { format } from 'url';
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +14,7 @@ class App extends Component {
     'a': {
       id: 3,
       expand: true,
-      content: <RuntimeNotRuntime />,
+      content: '123',
       contentStyle: {
         backgroundColor: '#1b3c44',
         height: '400px'
@@ -187,10 +189,10 @@ class App extends Component {
 
 
   changeLayoutStructure = (winW) => {
-    if(winW > this.breakpoints.lg.winW){
-      this.layoutConfig.b.style={width:'340px'};
+    if (winW > this.breakpoints.lg.winW) {
+      this.layoutConfig.b.style = { width: '340px' };
       this.setState({
-        structure:{
+        structure: {
           rows: [
             {
               cols: [
@@ -204,29 +206,29 @@ class App extends Component {
                 this.layoutConfig['d']
               ]
             }
-    
+
           ]
         },
-        layoutWrapWidth:this.breakpoints.lg.wrapW
+        layoutWrapWidth: this.breakpoints.lg.wrapW
       })
 
     } else if (winW <= this.breakpoints.lg.winW && winW > this.breakpoints.md.winW) {
-      this.layoutConfig.b.style={};
+      this.layoutConfig.b.style = {};
       this.setState({
-        structure:{
-          rows:[
+        structure: {
+          rows: [
             {
-              cols:[
+              cols: [
                 this.layoutConfig['a'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['c'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['b'],
                 this.layoutConfig['d'],
 
@@ -234,25 +236,25 @@ class App extends Component {
             }
           ]
         },
-        layoutWrapWidth:this.breakpoints.md.wrapW
+        layoutWrapWidth: this.breakpoints.md.wrapW
       })
 
-    } else if(winW <= this.breakpoints.md.winW && winW > this.breakpoints.sm.winW){
+    } else if (winW <= this.breakpoints.md.winW && winW > this.breakpoints.sm.winW) {
       this.setState({
-        structure:{
-          rows:[
+        structure: {
+          rows: [
             {
-              cols:[
+              cols: [
                 this.layoutConfig['a'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['c'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['b'],
                 this.layoutConfig['d'],
 
@@ -260,40 +262,45 @@ class App extends Component {
             }
           ]
         },
-        layoutWrapWidth:this.breakpoints.sm.wrapW
+        layoutWrapWidth: this.breakpoints.sm.wrapW
       })
 
-    } else if(winW <= this.breakpoints.sm.winW ){
+    } else if (winW <= this.breakpoints.sm.winW) {
       this.setState({
-        structure:{
-          rows:[
+        structure: {
+          rows: [
             {
-              cols:[
+              cols: [
                 this.layoutConfig['a'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['c'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['b'],
               ]
             },
             {
-              cols:[
+              cols: [
                 this.layoutConfig['d'],
               ]
             }
           ]
         },
-        layoutWrapWidth:this.breakpoints.xs.wrapW
+        layoutWrapWidth: this.breakpoints.xs.wrapW
       })
 
     }
 
+  }
+
+  onLayoutChange = () => {
+    console.log(this.layoutConfig)
+    localStorage.setItem('layoutState', JSON.stringify(this.layoutConfig));
   }
 
 
@@ -310,7 +317,7 @@ class App extends Component {
 
   render() {
     return (
-      this.state.resize && <ResponsiveLayout structure={this.state.structure} width={this.state.layoutWrapWidth}></ResponsiveLayout>
+      this.state.resize && <ResponsiveLayout structure={this.state.structure} onLayoutChange={this.onLayoutChange} width={this.state.layoutWrapWidth}></ResponsiveLayout>
     );
   }
 }
